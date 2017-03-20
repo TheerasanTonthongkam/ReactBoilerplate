@@ -22,7 +22,7 @@ module.exports = {
   resolve: {
     root: __dirname,
       modulesDirectories: [
-
+        'node_modules'
       ],
     alias: {
       Main: 'app/components/Main.jsx',
