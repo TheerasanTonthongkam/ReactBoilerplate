@@ -7,36 +7,136 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="shortcut icon" href="TemplateData/favicon.ico" />
     <script src="TemplateData/UnityProgress.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   </head>
   <body class="template">
   <style type="text/css">
     body, html {
       overflow: hidden;
+      background: url('TemplateData/tile.png');
     }
     div {
         background: #FFF !important;
     }
     #canvas {
-      background: rgba(31,39,48, 0.75);
+      background: rgba(31,39,48, 1);
+    }
+    #my-load {
+      display: block !important;
+    }
+    #my-load:after {
+      content: " ";
+      background: url('TemplateData/tile.png');
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block !important;
+      -webkit-transition: opacity 1.5s ease-in-out;
+      -moz-transition: opacity 1.5s ease-in-out;
+      -ms-transition: opacity 1.5s ease-in-out;
+      -o-transition: opacity 1.5s ease-in-out;
+    }
+
+    #my-load.hide:after {
+      content: " ";
+      opacity: 0;
     }
     .template-wrap {
       padding-top: 14px;
     }
+    
+    .spinner {
+      margin: 20px auto 0;
+      width: 70px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0) !important;
+    }
+
+    .spinner > div {
+      width: 18px;
+      height: 18px;
+      background-color: #333;
+
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+      0%, 80%, 100% { -webkit-transform: scale(0) }
+      40% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes sk-bouncedelay {
+      0%, 80%, 100% { 
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      } 40% { 
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+      }
+    }
+
+    #my-logo {
+      display: block !important;
+      margin: auto;
+      margin-top: 40px;
+    }
+
+    #load-container {
+      position: relative;
+      display: block !important;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background: rgba(255, 255, 255, 0) !important;
+
+    }
+
+    #load-container.hide {
+      opacity: 0;
+    }
+
   </style>
     <div class="template-wrap clear">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="675px" width="900px"></canvas>
+    </div>
+    <div id="my-load"></div>
+    <div id="load-container">
+      <img id="my-logo" src="TemplateData/game_logo.png"/>
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
     </div>
     <script type='text/javascript'>
   var Module = {
     TOTAL_MEMORY: 536870912,
     errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
     compatibilitycheck: null,
-    backgroundColor: "#222C36",
-    splashStyle: "Light",
+    backgroundColor: "#FFFFFF",
+    splashStyle: "Dark",
     dataUrl: "Release/AfterKlass.data",
     codeUrl: "Release/AfterKlass.js",
     asmUrl: "Release/AfterKlass.asm.js",
-    memUrl: "Release/AfterKlass.mem",
+    memUrl: "Release/AfterKlass.mem",backgroundImage: "background.jpg",
   };
 </script>
 <script src="Release/UnityLoader.js"></script>
@@ -54,6 +154,29 @@
       canvas.width = window.innerWidth; 
       canvas.height = (window.innerWidth) / gameRatio;
     }
+
+    var initFirebase = function(config) {
+      console.log("initFirebase");
+      firebase.initializeApp(config);
+    };
+
+    var getBuildType = function() {
+      return "PROD";
+    };
+
+    var onGameReady = function() {
+     var myLoad = $('#my-load');
+      var loadContainer = $('#load-container');
+      myLoad.addClass('hide');
+      loadContainer.addClass('hide');
+
+      setTimeout(function() {
+        myLoad.remove();
+        loadContainer.remove();
+      }, 1700);
+    };
+
   </script>
+
 
 </html>
